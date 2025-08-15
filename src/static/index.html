@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube Live Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="chat-container"></div>
+
+    <script>
+        const chatContainer = document.getElementById("chat-container");
+        const ws = new WebSocket(`ws://${window.location.host}/ws`);
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+
+            const chatDiv = document.createElement("div");
+            chatDiv.className = "chat";
+
+            const usernameDiv = document.createElement("div");
+            usernameDiv.className = "username";
+            usernameDiv.textContent = data.username;
+
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "message";
+            messageDiv.textContent = data.message;
+
+            chatDiv.appendChild(usernameDiv);
+            chatDiv.appendChild(messageDiv);
+            chatContainer.prepend(chatDiv);
+
+            // Limit total messages visible
+            while (chatContainer.childNodes.length > 10) {
+                chatContainer.removeChild(chatContainer.lastChild);
+            }
+        };
+    </script>
+</body>
+</html>

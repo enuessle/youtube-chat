@@ -1,0 +1,76 @@
+:root {
+    --username-bg: rgb(174, 0, 255);
+    --message-bg: rgb(255, 255, 255);
+    --username-color: white;
+    --message-color: rgb(0, 0, 0);
+    --username-padding: 2px 6px;
+    --message-padding: 4px 8px;
+    --chat-gap: 15px;
+    --message-gap: 1px;
+    --border-radius: 8px;
+    --username-font-size: 25px;
+    --message-font-size: 20px;
+    --wrap-length: 20vw;
+
+    /* Font variables */
+    --username-font-family: "Arial Black", Gadget, sans-serif;
+    --message-font-family: "Verdana", Geneva, sans-serif;
+    --username-font-weight: 900;
+    --message-font-weight: 700;
+
+    /* Outline variable */
+    --outline-width: 5px;
+}
+
+#chat-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column-reverse; /* newest at bottom */
+    gap: var(--chat-gap);
+    padding: 10px;
+    max-height: 90vh;
+    overflow: hidden; /* hide scroll bar */
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    gap: var(--message-gap);
+}
+
+.username {
+    display: inline-block;      
+    align-self: flex-start;     
+    background: var(--username-bg);
+    color: var(--username-color);
+    padding: var(--username-padding);
+    border-radius: var(--border-radius);
+    font-size: var(--username-font-size);
+    font-family: var(--username-font-family);
+    font-weight: var(--username-font-weight);
+    max-width: var(--wrap-length);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    transform: rotate(-2.5deg);
+    transform-origin: top right;
+    border: var(--outline-width) solid black;
+}
+
+.message {
+    display: inline-block;      
+    align-self: flex-start;     
+    background: var(--message-bg);
+    color: var(--message-color);
+    padding: var(--message-padding);
+    border-radius: var(--border-radius);
+    font-size: var(--message-font-size);
+    font-family: var(--message-font-family);
+    font-weight: var(--message-font-weight);
+    max-width: var(--wrap-length);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border: var(--outline-width) solid black;
+}
