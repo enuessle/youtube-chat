@@ -1,25 +1,25 @@
 :root {
-    --username-bg: rgb(174, 0, 255);
+    --username-bg: rgb(234, 0, 255);
     --message-bg: rgb(255, 255, 255);
     --username-color: white;
     --message-color: rgb(0, 0, 0);
-    --username-padding: 2px 6px;
+    --username-padding: 5px 15px;
     --message-padding: 4px 8px;
-    --chat-gap: 15px;
-    --message-gap: 1px;
-    --border-radius: 8px;
+    --chat-gap: 25px;
+        --message-gap: 10px;
+        --border-radius: 20px;
     --username-font-size: 25px;
     --message-font-size: 20px;
     --wrap-length: 20vw;
 
-    /* Font variables */
+    /* Fonts */
     --username-font-family: "Arial Black", Gadget, sans-serif;
     --message-font-family: "Verdana", Geneva, sans-serif;
-    --username-font-weight: 900;
+    --username-font-weight: 700;
     --message-font-weight: 700;
 
-    /* Outline variable */
-    --outline-width: 5px;
+    /* Outline */
+        --outline-width: 0px;
 }
 
 #chat-container {
@@ -28,22 +28,23 @@
     left: 0;
     right: 0;
     display: flex;
-    flex-direction: column-reverse; /* newest at bottom */
+    flex-direction: column-reverse;
     gap: var(--chat-gap);
     padding: 10px;
     max-height: 90vh;
-    overflow: hidden; /* hide scroll bar */
+    overflow: hidden;
 }
 
 .chat {
     display: flex;
     flex-direction: column;
     gap: var(--message-gap);
+    position: relative;
 }
 
 .username {
-    display: inline-block;      
-    align-self: flex-start;     
+    display: inline-block;
+        align-self: flex-start;
     background: var(--username-bg);
     color: var(--username-color);
     padding: var(--username-padding);
@@ -57,14 +58,19 @@
     transform: rotate(-2.5deg);
     transform-origin: top right;
     border: var(--outline-width) solid black;
+    z-index: 2;
+        /* Ensure username is on top of the message bubble */
+        position: relative;
 }
 
 .message {
-    display: inline-block;      
-    align-self: flex-start;     
+    position: relative;
+    display: inline-block;
+        align-self: flex-start;
     background: var(--message-bg);
     color: var(--message-color);
     padding: var(--message-padding);
+    margin-left: 35px;
     border-radius: var(--border-radius);
     font-size: var(--message-font-size);
     font-family: var(--message-font-family);
@@ -73,4 +79,21 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     border: var(--outline-width) solid black;
+    z-index: 1;
+    }
+    
+    /* Speech bubble tail - curved upward */
+    .message::after {
+        content: "";
+        position: absolute;
+        top: -5px;
+        /* Move closer to username */
+        left: -5px;
+        width: 0;
+        height: 0;
+        border: 10px solid transparent;
+        border-bottom: 10px solid var(--message-bg);
+        /* Make tail curve upward */
+        transform: rotate(60deg);
+        /* Curve effect */
 }

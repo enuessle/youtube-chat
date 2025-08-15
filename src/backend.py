@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 import asyncio
 
-CHANNEL_ID = "UCqiVYIJGI6BzGAg0CbomUXA"  # replace with your channel ID
+CHANNEL_ID = "UC_SI1j1d8vJo_rYMV5o_dRg"  # replace with your channel ID
 
 yt = YouTube()
 message_queue = queue.Queue()
