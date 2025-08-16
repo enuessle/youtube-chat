@@ -1,7 +1,7 @@
 import threading
 import time
 import queue
-from youtube_scraper import YouTube
+from chat_scraper import YouTube
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles

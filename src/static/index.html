@@ -1,40 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>YouTube Live Chat</title>
-    <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <title>YouTube Live Chat</title>
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-    <div id="chat-container"></div>
+  <div class="layout">
+    <!-- LEFT: Chat panel -->
+    <section id="chat-panel">
+      <div id="chat-container"></div>
+    </section>
 
-    <script>
-        const chatContainer = document.getElementById("chat-container");
-        const ws = new WebSocket(`ws://${window.location.host}/ws`);
+    <!-- RIGHT: Controls panel -->
+    <aside id="controls">
+      <h3>Chat Style Controls</h3>
 
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+      <div class="control-group">
+        <label for="username-bg">Username Background</label>
+        <input type="color" id="username-bg" value="#ea00ff" />
+      </div>
 
-            const chatDiv = document.createElement("div");
-            chatDiv.className = "chat";
+      <div class="control-group">
+        <label for="username-color">Username Text</label>
+        <input type="color" id="username-color" value="#ffffff" />
+      </div>
 
-            const usernameDiv = document.createElement("div");
-            usernameDiv.className = "username";
-            usernameDiv.textContent = data.username;
+      <div class="control-group">
+        <label for="message-bg">Message Background</label>
+        <input type="color" id="message-bg" value="#ffffff" />
+      </div>
 
-            const messageDiv = document.createElement("div");
-            messageDiv.className = "message";
-            messageDiv.textContent = data.message;
+      <div class="control-group">
+        <label for="message-color">Message Text</label>
+        <input type="color" id="message-color" value="#000000" />
+      </div>
 
-            chatDiv.appendChild(usernameDiv);
-            chatDiv.appendChild(messageDiv);
-            chatContainer.prepend(chatDiv);
+      <div class="control-group">
+        <label for="border-radius">Bubble Roundness</label>
+        <input type="range" id="border-radius" min="0" max="40" value="20" />
+      </div>
+    </aside>
+  </div>
 
-            // Limit total messages visible
-            while (chatContainer.childNodes.length > 10) {
-                chatContainer.removeChild(chatContainer.lastChild);
-            }
-        };
-    </script>
+  <script>
+    // WebSocket chat stream
+    const chatContainer = document.getElementById("chat-container");
+    const ws = new WebSocket(`ws://${window.location.host}/ws`);
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      const chatDiv = document.createElement("div");
+      chatDiv.className = "chat";
+
+      const usernameDiv = document.createElement("div");
+      usernameDiv.className = "username";
+      usernameDiv.textContent = data.username;
+
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "message";
+      messageDiv.textContent = data.message;
+
+      chatDiv.appendChild(usernameDiv);
+      chatDiv.appendChild(messageDiv);
+      chatContainer.appendChild(chatDiv);
+
+      // keep only the last 10
+      while (chatContainer.childNodes.length > 10) {
+        chatContainer.removeChild(chatContainer.firstChild);
+      }
+
+      // scroll newest into view
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    };
+
+    // Live style controls (update CSS variables)
+    const root = document.documentElement;
+    const setVar = (name, value) => root.style.setProperty(name, value);
+
+    document.getElementById("username-bg").addEventListener("input", e =>
+      setVar("--username-bg", e.target.value)
+    );
+    document.getElementById("username-color").addEventListener("input", e =>
+      setVar("--username-color", e.target.value)
+    );
+    document.getElementById("message-bg").addEventListener("input", e =>
+      setVar("--message-bg", e.target.value)
+    );
+    document.getElementById("message-color").addEventListener("input", e =>
+      setVar("--message-color", e.target.value)
+    );
+    document.getElementById("border-radius").addEventListener("input", e =>
+      setVar("--border-radius", `${e.target.value}px`)
+    );
+  </script>
 </body>
 </html>

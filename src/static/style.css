@@ -1,50 +1,107 @@
+/* ---------- Variables ---------- */
 :root {
-    --username-bg: rgb(234, 0, 255);
+--username-bg: rgb(234, 0, 255);
     --message-bg: rgb(255, 255, 255);
-    --username-color: white;
-    --message-color: rgb(0, 0, 0);
-    --username-padding: 5px 15px;
-    --message-padding: 4px 8px;
-    --chat-gap: 25px;
-        --message-gap: 10px;
-        --border-radius: 20px;
-    --username-font-size: 25px;
-    --message-font-size: 20px;
-    --wrap-length: 20vw;
+--username-color: #ffffff;
+    --message-color: #000000;
 
-    /* Fonts */
-    --username-font-family: "Arial Black", Gadget, sans-serif;
+    --username-padding: 2px 15px;
+    --message-padding: 4px 15px;
+    --chat-gap: 15px;
+    --message-gap: 4px;
+    --border-radius: 20px;
+
+--username-font-size: 25px;
+    --message-font-size: 20px;
+--wrap-length: 40vw;
+
+--username-font-family: "Arial Black", Gadget, sans-serif;
     --message-font-family: "Verdana", Geneva, sans-serif;
     --username-font-weight: 700;
     --message-font-weight: 700;
 
-    /* Outline */
-        --outline-width: 0px;
+--outline-width: 0px;
 }
 
-#chat-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+/* ---------- Layout: chat left, controls right ---------- */
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.layout {
     display: flex;
-    flex-direction: column-reverse;
-    gap: var(--chat-gap);
-    padding: 10px;
-    max-height: 90vh;
+    height: 100vh;
+}
+
+/* LEFT: chat panel */
+#chat-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    /* pile messages at bottom */
+    background: transparent;
+    /* keep page clear if you want overlay look */
     overflow: hidden;
 }
 
-.chat {
+/* Messages container (scrolls within the left panel) */
+#chat-container {
+flex: 1;
     display: flex;
+flex-direction: column;
+    gap: var(--chat-gap);
+padding: 12px;
+    overflow-y: auto;
+    /* scroll inside chat area */
+    box-sizing: border-box;
+}
+
+/* RIGHT: controls panel */
+#controls {
+    width: 280px;
+    border-left: 1px solid #ddd;
+    background: #f8f8f8;
+    color: #111;
+    padding: 12px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#controls h3 {
+    margin: 0 0 12px 0;
+    font-family: system-ui, sans-serif;
+}
+
+.control-group {
+    margin-bottom: 14px;
+    font-family: system-ui, sans-serif;
+}
+
+.control-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+input[type="color"],
+input[type="range"] {
+    width: 100%;
+}
+
+/* ---------- Chat bubbles ---------- */
+.chat {
+display: flex;
     flex-direction: column;
     gap: var(--message-gap);
     position: relative;
 }
 
 .username {
-    display: inline-block;
-        align-self: flex-start;
+display: inline-block;
+    align-self: flex-start;
     background: var(--username-bg);
     color: var(--username-color);
     padding: var(--username-padding);
@@ -58,19 +115,21 @@
     transform: rotate(-2.5deg);
     transform-origin: top right;
     border: var(--outline-width) solid black;
-    z-index: 2;
-        /* Ensure username is on top of the message bubble */
-        position: relative;
+/* ensure it stacks above the message if they overlap */
+    position: relative;
+z-index: 2;
 }
 
+/* message as a rounded speech bubble with a tail */
 .message {
-    position: relative;
+position: relative;
     display: inline-block;
-        align-self: flex-start;
+    align-self: flex-start;
     background: var(--message-bg);
     color: var(--message-color);
     padding: var(--message-padding);
-    margin-left: 35px;
+margin-left: 26px;
+    /* offset so tail can sit under the username area */
     border-radius: var(--border-radius);
     font-size: var(--message-font-size);
     font-family: var(--message-font-family);
@@ -80,20 +139,30 @@
     overflow-wrap: break-word;
     border: var(--outline-width) solid black;
     z-index: 1;
-    }
-    
-    /* Speech bubble tail - curved upward */
-    .message::after {
-        content: "";
-        position: absolute;
-        top: -5px;
-        /* Move closer to username */
-        left: -5px;
-        width: 0;
+}
+/* top-left speech bubble tail, slight upward angle */
+.message::after {
+    content: "";
+    position: absolute;
+top: -10px;
+    /* near top edge */
+    left: -10px;
+    /* stick outside left edge */
+    width: 0;
         height: 0;
         border: 10px solid transparent;
-        border-bottom: 10px solid var(--message-bg);
-        /* Make tail curve upward */
-        transform: rotate(60deg);
-        /* Curve effect */
+border-right-color: var(--message-bg);
+    /* triangle color = bubble bg */
+    transform: rotate(45deg);
+    /* give it a gentle upward curve */
+}
+
+/* optional: thin scrollbar inside chat area */
+#chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
 }
